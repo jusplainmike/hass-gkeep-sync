@@ -98,6 +98,22 @@ class AsyncConfigEntryAuth:
 
         await self._hass.async_add_executor_job(lambda: service.sync())
 
+    async def delete(
+        self,
+        task_list_name: str,
+        task: dict[str, Any],
+    ) -> None:
+        """Remove items from a Google Keep list."""
+        service = await self._get_service()
+
+        list_to_update = await self._get_or_create_list_name(task_list_name, service)
+
+        item = task["title"]
+
+        list_to_update.delete(item)
+
+        await self._hass.async_add_executor_job(lambda: service.sync())
+
     async def patch(
         self,
         task_list_name: str,
