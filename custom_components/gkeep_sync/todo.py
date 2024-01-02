@@ -104,6 +104,16 @@ class GoogleKeepTodoListEntity(
         )
         await self.coordinator.async_refresh()
 
+
+    async def async_remove_todo_item(self, item: TodoItem) -> None:
+        """Add an item to the To-do list."""
+        await self.coordinator.api.delete(
+            self._task_list_name,
+            task=_convert_todo_item(item),
+        )
+        await self.coordinator.async_refresh()
+
+
     async def async_update_todo_item(self, item: TodoItem) -> None:
         """Update a To-do item."""
         uid: str = cast(str, item.uid)
